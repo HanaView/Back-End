@@ -24,10 +24,7 @@ public class UserDepositResponseDto {
     private Boolean isLoss;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private User user;
-    private Deposit deposit;
-    private UserDeposit parent;
-    private List<UserDeposit> children;
+    private UserDepositResponseDto parent;
 
     public UserDepositResponseDto(UserDeposit entity) {
         this.id = entity.getId();
@@ -40,9 +37,8 @@ public class UserDepositResponseDto {
         this.isLoss = entity.getIsLoss();
         this.createdAt = entity.getCreatedDate();
         this.updatedAt = entity.getModifiedDate();
-        this.user = entity.getUser();
-        this.deposit = entity.getDeposit();
-        this.parent = entity.getParent();
-        this.children = entity.getUser().getUserDeposits();
+        if(entity.getParent() != null) {
+            this.parent = new UserDepositResponseDto(entity.getParent());
+        }
     }
 }

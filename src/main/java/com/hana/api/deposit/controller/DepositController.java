@@ -7,6 +7,7 @@ import com.hana.common.util.Helper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/deposit")
-@RestController
+@RequestMapping("/api/deposit")
+@RestController@Tag(name = "deposit Open API", description = "예금 서비스 가입, 휴면, 조회 처리")
 public class DepositController {
 
     private final DepositService depositService;
@@ -64,6 +65,7 @@ public class DepositController {
     @Parameter(name = "userId", description = "사용자 ID")
     @GetMapping("/{userId}/products")
     public ResponseEntity<?> getUserDeposits(@PathVariable Long userId) {
+
         return depositService.getUserDeposits(userId);
     }
 
