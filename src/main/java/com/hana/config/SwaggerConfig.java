@@ -7,10 +7,13 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import lombok.RequiredArgsConstructor;
+import org.apache.http.HttpHeaders;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Arrays;
 
 @RequiredArgsConstructor
 @Configuration
@@ -50,11 +53,14 @@ public class SwaggerConfig {
         Server localServer = new Server().url(LOCAL_SERVER_URL).description("Local server");
         Server prodServer = new Server().url(PROD_SERVER_URL).description("Production server");
 
+        SecurityRequirement securityRequirement = new SecurityRequirement().addList(ACCESS_TOKEN).addList(REFRESH_TOKEN);
+
         // OpenAPI 객체 생성 및 보안 스키마 설정
         return new OpenAPI()
                 .addServersItem(localServer)
                 .addServersItem(prodServer)
                 .components(components)
+                .security(Arrays.asList(securityRequirement))
                 .info(new Info().title("HanaView API").description("화상 창구 서비스 HanaView API 명세서 입니다.").version("1.0.0"));
     }
 

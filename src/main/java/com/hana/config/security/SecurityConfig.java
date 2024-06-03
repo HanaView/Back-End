@@ -4,15 +4,20 @@ package com.hana.config.security;
 
 //import com.hana.config.security.jwt.JwtAuthenticationFilter;
 //import com.hana.config.security.jwt.JwtTokenProvider;
+import com.hana.api.auth.service.CustomUserDetailsService;
+import com.hana.config.security.jwt.CustomUserAuthenticationProvider;
 import com.hana.config.security.jwt.JwtAuthenticationFilter;
 import com.hana.config.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,12 +41,9 @@ import java.util.List;
 public class SecurityConfig{
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final CustomUserDetailsService customUserDetailsService;
+    private final CustomUserAuthenticationProvider customUserAuthenticationProvider;
 
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     private static final String[] SWAGGER_URL = {
             "/api-docs",
@@ -86,6 +88,7 @@ public class SecurityConfig{
 
                 // 권한 규칙 작성
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api/auth/list").authenticated()
                         .requestMatchers(SWAGGER_URL).permitAll()
                         .requestMatchers(GET_PERMIT_API_URL).permitAll()
                         //.requestMatchers(POST_PERMIT_API_URL).authenticated()
@@ -113,5 +116,11 @@ public class SecurityConfig{
 
         source.registerCorsConfiguration("/**", config);
         return source;
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth, @Lazy PasswordEncoder passwordEncoder) throws Exception {
+        auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder);
+        auth.authenticationProvider(customUserAuthenticationProvider); // CustomUserAuthenticationProvider 등록
     }
 }

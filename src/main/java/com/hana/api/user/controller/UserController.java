@@ -4,6 +4,7 @@ package com.hana.api.user.controller;
 import com.hana.api.user.dto.request.UserRequestDto;
 import com.hana.api.user.dto.response.UserResponseDto;
 import com.hana.api.user.entity.User;
+import com.hana.api.user.repository.UserRepository;
 import com.hana.api.user.service.UserService;
 import com.hana.common.dto.Response;
 import com.hana.common.util.FileUpload;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
@@ -26,6 +28,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+import static com.hana.common.exception.ErrorCode.USER_NOT_AUTHENTICATION;
+import static com.hana.common.exception.ErrorCode.USER_NOT_FOUND;
+
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/login")
@@ -34,6 +39,7 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
     private final Response response;
     @Operation(summary = "로그인", description = "이메일 비번 입력 <br> token 리턴 ")
     // GET 일때
@@ -137,6 +143,20 @@ public class UserController {
         User user = userService.getUser(key + "1");
         userService.authComplete(user, key);
         return response.success(key);
+    }
+
+    @Operation(summary = "인증", description = "인증 완료 후 User 정보 Redis 2에 저장")
+    @PostMapping("/validate")
+    public ResponseEntity<?> validate(@RequestParam("key") String key) {
+        System.out.println(key);
+        //User user = userService.getUser(key + "2");
+        User user = userRepository.getReferenceById(1L);
+
+        if(user == null)
+            return response.fail(USER_NOT_AUTHENTICATION, HttpStatus.BAD_REQUEST);
+
+        // 토큰 발급
+        return userService.validate(user);
     }
 
 }
