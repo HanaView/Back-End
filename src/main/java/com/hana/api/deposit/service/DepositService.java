@@ -13,6 +13,7 @@ import com.hana.common.dto.Response;
 
 import com.hana.api.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DepositService {
 
     //deposit 관련 정보 가져오기
@@ -41,6 +43,14 @@ public class DepositService {
         return response.success(deposits);
     }
 
+    //테스트 함수
+    public List<DepositResponseDto> getAllDepositsTest() {
+        List<DepositResponseDto> deposits = depositRepository.findAll().stream()
+                .map(DepositResponseDto::new)
+                .collect(Collectors.toList());
+        return deposits;
+    }
+
     //에러처리
     public ResponseEntity<?> getDepositById(Long depositId) {
         Deposit deposit = depositRepository.findById(depositId)
@@ -48,6 +58,14 @@ public class DepositService {
 //                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.DEPOSIT_NOT_FOUND));
         return response.success(new DepositResponseDto(deposit));
     }
+    //테스트 함수
+    public Deposit getDepositByIdTest(Long depositId) {
+        Deposit deposit = depositRepository.findById(depositId)
+                .orElseThrow();
+//                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.DEPOSIT_NOT_FOUND));
+        return deposit;
+    }
+
 
     public ResponseEntity<?> joinDeposit(Long depositId, UserRequestDto.UserDepositRequestDto dto) {
         //1. user의 가입정보 가져오기 > 중복가입 방지 //todo
@@ -72,7 +90,9 @@ public class DepositService {
                 .password(dto.getPassword())
                 .bounds(300000L)
                 .deposit(deposit)
+                .parent(dto.getUserDepositId2() == null ? null : userDepositRepository.getReferenceById(dto.getUserDepositId2()))
                 .build();
+
         userDepositRepository.save(userDeposit);
         return response.success(new UserDepositResponseDto(userDeposit));
     }
@@ -82,16 +102,15 @@ public class DepositService {
         UserDeposit userDeposit = userDepositRepository.findById(userDepositId)
                 .orElseThrow(() -> new RuntimeException("UserDeposit not found with id " + userDepositId));
 
-        UserDeposit parentDeposit = userDeposit.getParent();
-
-        if (parentDeposit != null) {
+        if (userDeposit.getParent() != null) {
+            UserDeposit parentDeposit = userDeposit.getParent();
             parentDeposit.updateBalance(parentDeposit.getBounds() + userDeposit.getBounds());
             userDeposit.updateBalance(0L);
+            userDepositRepository.save(parentDeposit);
         }
 
         userDeposit.updateIsLoss(true);
         userDepositRepository.save(userDeposit);
-        userDepositRepository.save(parentDeposit);
 
         return response.success("Cancelled deposit with id " + userDepositId);
     }
@@ -118,8 +137,11 @@ public class DepositService {
     public ResponseEntity<?> getUserDepositById(Long userId, Long depositId) {
         Deposit deposit = depositRepository.getDepositById(depositId).orElseThrow(() -> new RuntimeException("UserDeposit not found with id " + depositId));
         List<UserDeposit> userDeposits = userDepositRepository.findByUserIdAndDeposit(userId, deposit);
+        List<UserDepositResponseDto> responseDtos = userDeposits.stream()
+                .map(UserDepositResponseDto::new)
+                .collect(Collectors.toList());
         // Fetch user-specific deposit by id logic here
         // This is a placeholder implementation
-        return response.success("Fetched deposit with id " + depositId + " for user with id " + userId);
+        return response.success(responseDtos);
     }
 }

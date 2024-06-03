@@ -72,4 +72,20 @@ public class UserDeposit extends BaseEntity {
     public void updateDormancy(boolean status){
         this.isHuman = status;
     }
+    @Override
+    public String toString() {
+        return "UserDeposit{" +
+                "id=" + id +
+                ", accountNumber='" + accountNumber + '\'' +
+                ", balance=" + balance +
+                ", bounds=" + bounds +
+                ", password='" + password + '\'' +
+                ", period=" + period +
+                ", isHuman=" + isHuman +
+                ", isLoss=" + isLoss +
+                ", user=" + (user != null ? "User[id=" + user.getId() + "]" : "null") +
+                ", deposit=" + (deposit != null ? "Deposit[id=" + deposit.getId() + "]" : "null") +
+                ", parent=" + (parent != null ? "UserDeposit[id=" + parent.getId() + "]" : "null") +
+                '}';
+    }
 }

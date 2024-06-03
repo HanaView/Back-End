@@ -2,6 +2,7 @@ package com.hana.api.user.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,11 +39,11 @@ public class UserRequestDto {
     @Getter
     @Setter
     public static class UserDepositRequestDto {
-        @NotEmpty(message = "예금 상품명은 필수 값입니다.")
+        @NotNull(message = "예금 상품명은 필수 값입니다.")
         private Long userId;
-        @NotEmpty(message = "잔액은 필수 값입니다.")
+        @NotNull(message = "잔액은 필수 값입니다.")
         private Long balance;
-        @NotEmpty(message = "가입 기간은 필수 값입니다.")
+        @NotNull(message = "가입 기간은 필수 값입니다.")
         private long period;
         @NotEmpty(message = "비밀번호는 필수 값입니다.")
         private String password;
