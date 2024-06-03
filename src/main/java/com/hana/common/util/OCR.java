@@ -133,6 +133,7 @@ public class OCR {
 
         JSONObject usernum_obj = (JSONObject) fields.get(1);
         String usernum = (String)usernum_obj.get("inferText");
+        String fixUsernum = usernum.substring(0,6) + usernum.substring(7);
 
         JSONObject useraddress_obj = (JSONObject) fields.get(2);
         String useraddress = (String)useraddress_obj.get("inferText");
@@ -143,7 +144,7 @@ public class OCR {
 
 
         map.put("username", username);
-        map.put("usernum", usernum);
+        map.put("usernum", fixUsernum);
         map.put("useraddress", useraddress);
         map.put("userdate", userdate);
         log.info(username + usernum + useraddress + userdate);
