@@ -1,5 +1,6 @@
 package com.hana.api.user.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,15 +17,5 @@ public class UserResponseDto {
         private Long refreshTokenExpirationTime;
     }
 
-
-    @Builder
-    @Getter
-    @AllArgsConstructor
-    public static class UserResponse{
-        private Long id;
-        private String name;
-        private String tele;
-        private String socialNumber;
-    }
 
 }

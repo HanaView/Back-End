@@ -6,6 +6,7 @@ import com.hana.api.auth.dto.request.UserAuthRequest;
 import com.hana.api.auth.dto.request.UserSignupRequest;
 import com.hana.api.auth.service.RedisAuthService;
 import com.hana.api.user.dto.request.UserRequestDto;
+import com.hana.api.user.dto.response.UserResponse;
 import com.hana.api.user.dto.response.UserResponseDto;
 import com.hana.api.user.entity.User;
 import com.hana.api.user.repository.UserRepository;
@@ -14,6 +15,7 @@ import com.hana.common.util.MessageUtil;
 import com.hana.config.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpStatus;
@@ -24,6 +26,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
@@ -50,15 +53,22 @@ public class UserService {
 
     public ResponseEntity<?> auth(UserRequestDto.Auth auth) {
         User user = userRepository.findByNameAndTele(auth.getName(), auth.getTele()).orElse(null);
+
         //user = User.builder().name("박병철").id(1L).socialNumber("230829-012486").tele("010-1234-5678").build();
         if(user == null)
             return response.fail(USER_NOT_FOUND, HttpStatus.BAD_REQUEST);
+
+        UserResponse userResponse = UserResponse.builder().
+                                    socialNumber(user.getSocialNumber()).
+                                    tele(user.getTele()).
+                                    name(user.getName()).
+                                    id(user.getId()).build();
         // 2. random key 발급
         String randomKey = UUID.randomUUID().toString().substring(0, 10);
         log.info("key" + randomKey);
         // 3. redis random key and dto
         ValueOperations<String, Object> valueOperations = createRedisTemplate.opsForValue();
-        valueOperations.set(randomKey + "1", user);
+        valueOperations.set(randomKey + "1", userResponse);
         //valueOperations.set(randomKey + "1", user, 10, TimeUnit.MINUTES);
         //4. 문자전송
         //MessageUtil.Sendmsg(randomKey, auth.getTele());
@@ -66,15 +76,17 @@ public class UserService {
         return response.success(randomKey, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> authComplete(User user, String key) {
+    public ResponseEntity<?> authComplete(UserResponse user, String key) {
         ValueOperations<String, Object> valueOperations = createRedisTemplate.opsForValue();
+        log.info(user.toString());
         valueOperations.set(key + "2", user);
         return response.success(key, HttpStatus.OK);
     }
 
-    public User getUser(String key) {
+
+    public UserResponse getUser(String key) {
         ValueOperations<String, Object> valueOperations = createRedisTemplate.opsForValue();
-        return (User) valueOperations.get(key);
+        return (UserResponse) valueOperations.get(key);
     }
 
     public User registerUser(UserSignupRequest signupRequest) {

@@ -19,7 +19,7 @@ public class MessageUtil {
 
         params.put("to", tele);
         //유지
-        params.put("from", "01080195950");
+        params.put("from", "01012345678");
         //유지
         params.put("type", "SMS");
         params.put("text", msg);
