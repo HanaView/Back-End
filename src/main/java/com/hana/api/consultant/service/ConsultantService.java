@@ -7,6 +7,7 @@ import com.hana.api.consultant.entity.Consultant;
 import com.hana.api.consultant.repository.ConsultantRepository;
 import com.hana.common.dto.Response;
 import com.hana.common.exception.ErrorCode;
+import com.hana.common.exception.consultant.ConsultantNotFoundException;
 import com.hana.config.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,9 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
+import static com.hana.common.exception.ErrorCode.CONSULTANT_DUPLICATION;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +34,10 @@ public class ConsultantService {
     private final Response response;
 
     public ResponseEntity<?> signUp(AuthRequest.ConsultantSignupRequest consultantSignupRequest){
+
+        if (consultantRepository.existsByLoginId(consultantSignupRequest.getLoginId())) {
+            return response.fail(CONSULTANT_DUPLICATION, HttpStatus.BAD_REQUEST);
+        }
 
         Consultant consultant =
                 Consultant.builder()
@@ -80,25 +83,9 @@ public class ConsultantService {
         }
     }
 
-//    public ResponseEntity<?> refreshConsultantToken(String refreshToken) {
-//        String username = jwtUtil.extractUsername(refreshToken);
-//        String storedRefreshToken = redisAuthService.getRefreshToken(username);
-//
-//        if (storedRefreshToken != null && storedRefreshToken.equals(refreshToken)) {
-//            String newAccessToken = jwtUtil.generateToken(username);
-//            return new AuthResponse(newAccessToken, refreshToken);
-//        } else {
-//            throw new RuntimeException("Invalid refresh token");
-//        }
-//    }
-
-    public Optional<Consultant> findByLoginId(String loginId) {
-        return consultantRepository.findByLoginId(loginId);
-    }
-
     public void deleteConsultant(String loginId) {
         Consultant consultant = consultantRepository.findByLoginId(loginId)
-                .orElseThrow(() -> new RuntimeException("Consultant not found"));
+                .orElseThrow(() -> new ConsultantNotFoundException(ErrorCode.CONSULTANT_NOT_FOUND));
         consultantRepository.delete(consultant);
     }
 }

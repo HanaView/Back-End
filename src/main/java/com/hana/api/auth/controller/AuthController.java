@@ -2,6 +2,7 @@ package com.hana.api.auth.controller;
 
 import com.hana.api.auth.dto.request.AuthRequest;
 import com.hana.api.auth.service.RedisAuthService;
+import com.hana.api.auth.service.TokenService;
 import com.hana.api.consultant.service.ConsultantService;
 import com.hana.api.user.service.UserService;
 import com.hana.common.dto.Response;
@@ -30,6 +31,7 @@ public class AuthController {
 
     private final RedisAuthService redisAuthService;
     private final UserService userService;
+    private final TokenService tokenService;
     private final ConsultantService consultantService;
     private final Response response;
 
@@ -41,7 +43,6 @@ public class AuthController {
         if (errors.hasErrors()) {
             return response.invalidFields(Helper.refineErrors(errors));
         }
-
         return consultantService.signUp(registerRequest);
     }
 
@@ -53,7 +54,6 @@ public class AuthController {
         if (errors.hasErrors()) {
             return response.invalidFields(Helper.refineErrors(errors));
         }
-
         return userService.signUp(registerRequest);
     }
 
@@ -74,7 +74,7 @@ public class AuthController {
         if (errors.hasErrors()) {
             return response.invalidFields(Helper.refineErrors(errors));
         }
-        return userService.reissue(reissue);
+        return tokenService.reissue(reissue);
     }
 
     @PostMapping("/logout")
@@ -83,9 +83,10 @@ public class AuthController {
         if (errors.hasErrors()) {
             return response.invalidFields(Helper.refineErrors(errors));
         }
-        return userService.logout(logout);
+        return tokenService.logout(logout);
     }
 
+    // test용 API
     @GetMapping("/list")
     public ResponseEntity<?> list(@AuthenticationPrincipal User user){
         log.info(user.toString());

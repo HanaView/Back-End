@@ -11,16 +11,19 @@ import lombok.Getter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public enum ErrorCode {
 
+    // Auth
+    AUTH_FAIL("A001", "인증 실패"),
+
     // User
     USER_NOT_FOUND("U001","등록된 회원이 아닙니다."),
     USER_NOT_AUTHENTICATION("U002", "인증된 회원이 아닙니다."),
-    USER_NAME_DUPLICATION("U003","중복된 이름입니다."),
+    USER_DUPLICATION("U003","이미 존재하는 유저 정보입니다."),
     USER_UNAUTHORIZED("U004", "유저 인증에 실패했습니다."),
 
     // Consultant
     CONSULTANT_NOT_FOUND("C001","등록된 상담원이 아닙니다."),
     CONSULTANT_NOT_AUTHENTICATION("C002", "인증된 상담원이 아닙니다."),
-    CONSULTANT_LOGIN_ID_DUPLICATION("C003","중복된 아이디입니다."),
+    CONSULTANT_DUPLICATION("C003","이미 존재하는 아이디 입니다."),
     CONSULTANT_UNAUTHORIZED("C004", "상담원 인증에 실패했습니다."),
 
     // Token

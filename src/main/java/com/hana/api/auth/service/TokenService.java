@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class TokenRefreshService {
+public class TokenService {
 
     private  final JwtTokenProvider jwtTokenProvider;
     private final RedisTemplate redisTemplate;

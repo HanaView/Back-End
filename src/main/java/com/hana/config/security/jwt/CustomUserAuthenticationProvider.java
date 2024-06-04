@@ -1,11 +1,8 @@
 package com.hana.config.security.jwt;
-
-import com.hana.api.auth.service.CustomUserDetailsService;
 import com.hana.api.user.entity.User;
 import com.hana.api.user.repository.UserRepository;
 import com.hana.common.exception.ErrorCode;
 import com.hana.common.exception.user.UserNotFoundException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -46,15 +43,12 @@ public class CustomUserAuthenticationProvider implements AuthenticationProvider 
                 .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
 
         if (user != null) {
-
             UserDetails userDetails =
                     new org.springframework.security.core.userdetails.User(user.getName(), "", Collections.singletonList(new SimpleGrantedAuthority("ROLE_user")));
-
             // 사용자 정보가 올바르게 로드된 경우 인증 성공 처리
             return new UsernamePasswordAuthenticationToken(
                     userDetails, null, userDetails.getAuthorities());
         }
-
         throw new BadCredentialsException("Authentication failed for " + username);
     }
 

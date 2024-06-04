@@ -12,6 +12,7 @@ import com.hana.api.user.entity.User;
 import com.hana.api.user.repository.UserRepository;
 import com.hana.common.dto.Response;
 import com.hana.common.exception.ErrorCode;
+import com.hana.common.exception.user.UserNotFoundException;
 import com.hana.config.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,13 +52,16 @@ public class UserService {
 
     public ResponseEntity<?> signUp(AuthRequest.UserSignupRequest userSignupRequest){
 
+        if (userRepository.existsByNameAndTele(userSignupRequest.getName(), userSignupRequest.getTele())) {
+            return response.fail(USER_DUPLICATION, HttpStatus.BAD_REQUEST);
+        }
+
         User user =
                 User.builder()
                         .name(userSignupRequest.getName())
                         .tele(userSignupRequest.getTele())
                         .socialNumber(userSignupRequest.getSocialNumber())
                         .build();
-
         userRepository.save(user);
 
         return response.success("회원가입 완료");
@@ -90,24 +94,6 @@ public class UserService {
     public User getUser(String key) {
         ValueOperations<String, Object> valueOperations = createRedisTemplate.opsForValue();
         return (User) valueOperations.get(key);
-    }
-
-    public User registerUser(AuthRequest.UserSignupRequest signupRequest) {
-        User user =
-                User.builder()
-                        .name(signupRequest.getName())
-                        .tele(signupRequest.getTele())
-                        .socialNumber(signupRequest.getSocialNumber())
-                        .build();
-        return userRepository.save(user);
-    }
-
-    public Optional<User> findByNameAndTel(String name, String tel) {
-        return userRepository.findByNameAndTele(name, tel);
-    }
-
-    public boolean validateUser(AuthRequest.UserAuthRequest userAuthRequest) {
-        return redisAuthService.isAuthenticated(userAuthRequest.getRandomKey());
     }
 
     public ResponseEntity<?> validate(User user) {
@@ -146,57 +132,7 @@ public class UserService {
 
     public void deleteUser(String name, String tel) {
         User user = userRepository.findByNameAndTele(name, tel)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         userRepository.delete(user);
-    }
-
-    public ResponseEntity<?> reissue(AuthRequest.Reissue reissue) {
-        // 1. Refresh Token 검증
-        if (!jwtTokenProvider.validateToken(reissue.getRefreshToken())) {
-            return response.fail(INVALID_REFRESHTOKEN, HttpStatus.BAD_REQUEST);
-        }
-
-        // 2. Access Token 에서 User email 을 가져옵니다.
-        Authentication authentication = jwtTokenProvider.getAuthentication(reissue.getAccessToken());
-
-        // 3. Redis 에서 User email 을 기반으로 저장된 Refresh Token 값을 가져옵니다.
-        String refreshToken = (String)createRedisTemplate.opsForValue().get("RT:" + authentication.getName());
-        // (추가) 로그아웃되어 Redis 에 RefreshToken 이 존재하지 않는 경우 처리
-        if(ObjectUtils.isEmpty(refreshToken)) {
-            return response.fail(NOT_FOUND_REFRESHTOKEN, HttpStatus.BAD_REQUEST);
-        }
-        if(!refreshToken.equals(reissue.getRefreshToken())) {
-            return response.fail(INVALID_REFRESHTOKEN, HttpStatus.BAD_REQUEST);
-        }
-
-        // 4. 새로운 토큰 생성
-        AuthResponseDto authResponseDto = jwtTokenProvider.generateToken(authentication);
-
-        // 5. RefreshToken Redis 업데이트
-        createRedisTemplate.opsForValue()
-                .set("RT:" + authentication.getName(), authResponseDto.getRefreshToken(), authResponseDto.getRefreshTokenExpirationTime(), TimeUnit.MILLISECONDS);
-
-        return response.success(authResponseDto, HttpStatus.OK);
-    }
-
-    public ResponseEntity<?> logout(AuthRequest.Logout logout) {
-        // 1. Access Token 검증
-        if (!jwtTokenProvider.validateToken(logout.getAccessToken())) {
-            return response.fail(INVALID_ACCESSTOKEN, HttpStatus.BAD_REQUEST);
-        }
-
-        // 2. Access Token 에서 User email 을 가져옵니다.
-        Authentication authentication = jwtTokenProvider.getAuthentication(logout.getAccessToken());
-
-        // 3. Redis 에서 해당 User email 로 저장된 Refresh Token 이 있는지 여부를 확인 후 있을 경우 삭제합니다.
-//
-
-        // 4. 해당 Access Token 유효시간 가지고 와서 BlackList 로 저장하기
-        Long expiration = jwtTokenProvider.getExpiration(logout.getAccessToken());
-        createRedisTemplate.opsForValue()
-                .set(logout.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
-        // 5. 이후 JwtAuthenticationFilter 에서 redis에 있는 logout 정보를 가지고 와서 접근을 거부함
-
-        return response.success("로그아웃 되었습니다.");
     }
 }

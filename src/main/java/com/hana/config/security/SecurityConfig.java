@@ -88,6 +88,7 @@ public class SecurityConfig{
 
                 // 권한 규칙 작성
                 .authorizeHttpRequests(authorize -> authorize
+                        // 인증 test API
                         .requestMatchers("/api/auth/list").authenticated()
                         .requestMatchers(SWAGGER_URL).permitAll()
                         .requestMatchers(GET_PERMIT_API_URL).permitAll()
