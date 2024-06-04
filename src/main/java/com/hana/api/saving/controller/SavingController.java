@@ -6,6 +6,7 @@ import com.hana.common.util.Helper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/saving")
-@RestController
+@RequestMapping("/api/saving")
+@RestController@Tag(name = "saving Open API", description = "적금 서비스 가입, 휴면, 조회 처리")
 public class SavingController {
 
     private final SavingService savingService;
