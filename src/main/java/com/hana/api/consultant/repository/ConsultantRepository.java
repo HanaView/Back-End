@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface ConsultantRepository extends JpaRepository<Consultant, Long> {
     // loginId로 Consultant 찾기
     Optional<Consultant> findByLoginId(String loginId);
+    boolean existsByLoginId(String loginId);
 }

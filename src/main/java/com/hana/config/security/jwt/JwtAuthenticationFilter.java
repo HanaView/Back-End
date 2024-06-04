@@ -29,14 +29,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        log.info("Start JwtAuthenticationFilter -------------------------------------------1");
+        log.info("[JwtAuthenticationFilter] --------- 1");
         // 1. Request Header 에서 JWT 토큰 추출
         String token = resolveToken((HttpServletRequest) request);
         log.info("[JwtAuthenticationFilter] AccessToken 값 추출 완료: {}", token);
 
         // 2. validateToken 으로 토큰 유효성 검사
         if (token != null && jwtTokenProvider.validateToken(token)) {
-            log.info("Start JwtAuthenticationFilter -------------------------------------------2");
+            log.info("[JwtAuthenticationFilter] ---------- 2");
 
 //            // Redis 에 해당 accessToken logout 여부 확인
 //            String isLogout = (String)redisTemplate.opsForValue().get(token);
@@ -48,8 +48,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 // 토큰이 유효할 경우 토큰에서 Authentication 객체를 가지고 와서 SecurityContext 에 저장
                 Authentication authentication = jwtTokenProvider.getAuthentication(token);
                 // getName은 사용자의 ID를 의미 함
-                log.info("Start JwtAuthenticationFilter -------------------------------------------6 "+authentication.getName());
-                log.info("Start JwtAuthenticationFilter -------------------------------------------6 "+authentication.getAuthorities());
+                log.info("[JwtAuthenticationFilter] ----------------6 "+authentication.getName());
+                log.info("[JwtAuthenticationFilter]-----------------6 "+authentication.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
@@ -61,6 +61,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     // Request Header 에서 토큰 정보 추출
     private String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        log.info("[resolveToken] bearerToken 정보 조회 : {}", bearerToken);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_TYPE)) {
             return bearerToken.substring(7);
         }
