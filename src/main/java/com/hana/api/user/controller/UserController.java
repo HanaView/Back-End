@@ -2,7 +2,7 @@ package com.hana.api.user.controller;
 
 
 import com.hana.api.user.dto.request.UserRequestDto;
-import com.hana.api.user.dto.response.UserResponseDto;
+import com.hana.api.user.dto.response.UserResponse;
 import com.hana.api.user.entity.User;
 import com.hana.api.user.repository.UserRepository;
 import com.hana.api.user.service.UserService;
@@ -62,8 +62,7 @@ public class UserController {
             // Redis에 저장할 키
             String redisKey = key + "3";
             session.setAttribute("key", key);
-            User user = userService.getUser(key + "1");
-            UserResponseDto.UserResponse userResponse = new UserResponseDto.UserResponse(user.getId(), user.getName(), user.getTele(), user.getSocialNumber());
+            UserResponse user = userService.getUser(key + "1");
             // 이미지 파일을 바이트 배열로 변환하여 Redis에 저장
             redisTemplate.opsForValue().set(redisKey, uploadImg.getBytes());
 
@@ -90,7 +89,7 @@ public class UserController {
                 }
 
                 Map<String, Object> map = OCR.getData(jsonObject);
-                map.put("user", userResponse);
+                map.put("user", user);
                 map.put("key", key);
                 log.info("map 정보" + map);
                 return response.success(map);
@@ -111,7 +110,7 @@ public class UserController {
     @GetMapping("/authComplete")
     public ResponseEntity<?> auth(@RequestParam("key") String key) {
         System.out.println(key);
-        User user = userService.getUser(key + "1");
+        UserResponse user = userService.getUser(key + "1");
         userService.authComplete(user, key);
         return response.success(key);
     }

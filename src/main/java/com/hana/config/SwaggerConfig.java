@@ -75,6 +75,11 @@ public class SwaggerConfig {
     public GroupedOpenApi adminOpenApi() {
         return createGroupedOpenApi("ADMIN API", "/api/admins/**", null, "Admin", "화상 창구 서비스 HanaView Admin API 명세서 입니다.", "1.0.0");
     }
+    // deposit API 그룹 생성
+    @Bean
+    public GroupedOpenApi depositOpenApi() {
+        return createGroupedOpenApi("Deposit API", "/api/deposit/**", null, "Deposit", "화상 창구 서비스 HanaView Admin API 명세서 입니다.", "1.0.0");
+    }
 
     // GroupedOpenApi 객체를 생성하는 메서드
     private GroupedOpenApi createGroupedOpenApi(String group, String path, String[] excludePaths, String title, String description, String version) {

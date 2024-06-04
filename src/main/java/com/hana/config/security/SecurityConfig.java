@@ -64,6 +64,10 @@ public class SecurityConfig{
             "/",
     };
 
+    private final String[] PUT_PERMIT_API_URL = {
+            "/**",
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -94,6 +98,7 @@ public class SecurityConfig{
                         .requestMatchers(GET_PERMIT_API_URL).permitAll()
                         //.requestMatchers(POST_PERMIT_API_URL).authenticated()
                         .requestMatchers(POST_PERMIT_API_URL).permitAll()
+                        .requestMatchers(PUT_PERMIT_API_URL).permitAll()
                         .requestMatchers("/admin/**").hasRole("admin")
                         .anyRequest().permitAll())
                 .build();
