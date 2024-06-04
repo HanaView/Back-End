@@ -108,7 +108,7 @@ public class UserController {
     }
 
     @Operation(summary = "인증", description = "인증 완료 후 User 정보 Redis 2에 저장")
-    @PostMapping("/authComplete")
+    @GetMapping("/authComplete")
     public ResponseEntity<?> auth(@RequestParam("key") String key) {
         System.out.println(key);
         User user = userService.getUser(key + "1");
@@ -116,8 +116,8 @@ public class UserController {
         return response.success(key);
     }
 
-    @Operation(summary = "인증", description = "인증 완료 후 User 정보 Redis 2에 저장")
-    @PostMapping("/validate")
+    @Operation(summary = "Token 발급", description = "Key를 통해 Redis 2에서 User 정보를 조회 후, Token 발급")
+    @GetMapping("/validate")
     public ResponseEntity<?> validate(@RequestParam("key") String key) {
         System.out.println(key);
         //User user = userService.getUser(key + "2");
