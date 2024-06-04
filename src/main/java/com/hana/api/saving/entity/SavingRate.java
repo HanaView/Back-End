@@ -27,7 +27,7 @@ public class SavingRate extends BaseEntity {
 
     @Column(nullable = false, length = 31)
     @NotBlank(message = "기간별 이자율은 필수 값입니다.")
-    private double rate;
+    private Double rate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "saving_id", referencedColumnName = "saving_id")

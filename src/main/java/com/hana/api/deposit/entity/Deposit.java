@@ -29,10 +29,10 @@ public class Deposit extends BaseEntity {
     private String name;
 
     @Column
-    private long minJoinAmount;
+    private Long minJoinAmount;
 
     @Column
-    private long maxJoinAmount;
+    private Long maxJoinAmount;
 
     @Column(length = 31)
     private String target;

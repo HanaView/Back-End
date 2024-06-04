@@ -26,7 +26,7 @@ public class ConsultantReview extends BaseEntity {
 
     @Column(nullable = false)
     @NotBlank(message = "평점은 필수 값입니다.")
-    private int score;
+    private Integer score;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "consultant_id", referencedColumnName = "consultant_id")
