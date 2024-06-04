@@ -14,17 +14,20 @@ public enum ErrorCode {
     // User
     USER_NOT_FOUND("U001","등록된 회원이 아닙니다."),
     USER_NOT_AUTHENTICATION("U002", "인증된 회원이 아닙니다."),
-    USER_EMAIL_DUPLICATION("U003","중복된 이메일입니다."),
-    USER_NAME_DUPLICATION("U004","중복된 이름입니다."),
-    USER_UNAUTHORIZED("U005", "인증에 실패했습니다."),
+    USER_NAME_DUPLICATION("U003","중복된 이름입니다."),
+    USER_UNAUTHORIZED("U004", "유저 인증에 실패했습니다."),
+
+    // Consultant
+    CONSULTANT_NOT_FOUND("C001","등록된 상담원이 아닙니다."),
+    CONSULTANT_NOT_AUTHENTICATION("C002", "인증된 상담원이 아닙니다."),
+    CONSULTANT_LOGIN_ID_DUPLICATION("C003","중복된 아이디입니다."),
+    CONSULTANT_UNAUTHORIZED("C004", "상담원 인증에 실패했습니다."),
 
     // Token
-    INVALID_REFRESHTOKEN("U005", "유효하지 않은 리프레쉬 토큰 입니다."),
-    NOT_FOUND_REFRESHTOKEN("U006", "리프레쉬 토큰이 존재하지 않습니다."),
-    INVALID_ACCESSTOKEN("U007", "유효하지 않은 액세스 토큰 입니다."),
-    NOT_FOUND_ACCESSTOKEN("U008", "액세스 토큰이 존재하지 않습니다."),
-
-    // Teller
+    INVALID_REFRESHTOKEN("T001", "유효하지 않은 리프레쉬 토큰 입니다."),
+    NOT_FOUND_REFRESHTOKEN("T002", "리프레쉬 토큰이 존재하지 않습니다."),
+    INVALID_ACCESSTOKEN("T003", "유효하지 않은 액세스 토큰 입니다."),
+    NOT_FOUND_ACCESSTOKEN("T004", "액세스 토큰이 존재하지 않습니다."),
 
     // Deposit
     DEPOSIT_NOT_FOUND("U099", "예금이 존재하지 않습니다."),

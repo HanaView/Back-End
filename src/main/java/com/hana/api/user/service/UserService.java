@@ -122,10 +122,10 @@ public class UserService {
             // 1. Login ID/PW 를 기반으로 Authentication 객체 생성
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("USER_" + user.getId(), "");
 
-            log.info("[SignIn] authenticationToken : {}", authenticationToken.toString());
+            log.info("[SignIn] authenticationToken : {}", authenticationToken);
 
             // 2. 실제 검증 (사용자 비밀번호 체크)이 이루어지는 부분
-            // authenticationManager에 의해 loadUserByUsername 이 호출되는 부분
+            // authenticationManager에 의해 CustomUserAuthenticationProvider 이 호출되는 부분
             Authentication authentication = authenticationManager.authenticate(authenticationToken);
             log.info("[SignIn] authentication : {}", authentication.toString());
 
@@ -136,6 +136,7 @@ public class UserService {
             // 4. RefreshToken Redis 저장 (expirationTime 설정을 통해 자동 삭제 처리)
             // log.info("RT:" + authentication.getName() + " : " + authResponseDto.getRefreshToken() + " : " + TimeUnit.MILLISECONDS);
             // redisTemplate.opsForValue().set("RT:" + authentication.getName(), tokenInfo.getRefreshToken(), tokenInfo.getRefreshTokenExpirationTime(), TimeUnit.MILLISECONDS);
+
             return response.success(authResponseDto, HttpStatus.OK);
         } catch (AuthenticationException e) {
             return response.fail(ErrorCode.USER_UNAUTHORIZED, HttpStatus.UNAUTHORIZED);
