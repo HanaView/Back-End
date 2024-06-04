@@ -19,6 +19,7 @@ import java.util.List;
 @Table(name = "saving_category")
 @Entity
 public class SavingCategory extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "saving_category_id")

@@ -10,6 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface SavingRepository extends JpaRepository<Saving, Long>{
-
     Optional<Saving> getDepositById(Long id);
 }
