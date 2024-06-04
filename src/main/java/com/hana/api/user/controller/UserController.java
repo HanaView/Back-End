@@ -131,7 +131,7 @@ public class UserController {
     }
 
     @Operation(summary = "인증", description = "인증 완료 후 User 정보 Redis 2에 저장")
-    @PostMapping("/authComplete")
+    @GetMapping("/authComplete")
     public ResponseEntity<?> auth(@RequestParam("key") String key) {
         System.out.println(key);
         UserResponse user = userService.getUser(key + "1");
