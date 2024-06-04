@@ -15,6 +15,7 @@ import lombok.*;
 @Table(name = "saving_rate")
 @Entity
 public class SavingRate extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "saving_rate_id")
