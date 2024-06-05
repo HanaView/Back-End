@@ -119,8 +119,8 @@ public class UserController {
     @GetMapping("/validate")
     public ResponseEntity<?> validate(@RequestParam("key") String key) {
         System.out.println(key);
-        //User user = userService.getUser(key + "2");
-        User user = userRepository.getReferenceById(1L);
+        UserResponse user = userService.getUser(key + "2");
+        //User user = userRepository.getReferenceById(1L);
 
         if(user == null)
             return response.fail(USER_NOT_AUTHENTICATION, HttpStatus.BAD_REQUEST);

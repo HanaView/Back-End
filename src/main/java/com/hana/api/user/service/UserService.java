@@ -106,7 +106,7 @@ public class UserService {
         return (UserResponse) valueOperations.get(key);
     }
 
-    public ResponseEntity<?> validate(User user) {
+    public ResponseEntity<?> validate(UserResponse user) {
 
         log.info("[Validate] 회원 정보 요청");
 
