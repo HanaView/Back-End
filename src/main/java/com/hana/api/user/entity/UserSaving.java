@@ -48,14 +48,17 @@ public class UserSaving {
     private Boolean isLoss;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     @JoinColumn(name = "saving_id", referencedColumnName = "saving_id")
     private Saving saving;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     @JoinColumn(name = "user_deposit_id", referencedColumnName = "user_deposit_id")
     private UserDeposit userDeposit;
 }

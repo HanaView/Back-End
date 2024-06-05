@@ -22,7 +22,7 @@ public class UserSavingResponseDto {
     private Long perMonth;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Saving saving;
+    private UserDepositResponseDto parent;
     public UserSavingResponseDto(UserSaving entity){
         this.id = entity.getId();
         this.accountNumber = entity.getAccountNumber();
@@ -31,7 +31,9 @@ public class UserSavingResponseDto {
         this.password = entity.getPassword();
         this.perMonth = entity.getPerMonth();
         this.period = entity.getPeriod();
-        this.saving = entity.getSaving();
+        if(entity.getUserDeposit() != null) {
+            this.parent = new UserDepositResponseDto(entity.getUserDeposit());
+        }
         this.createdAt = entity.getSaving().getCreatedDate();
         this.updatedAt = entity.getSaving().getModifiedDate();
     }
