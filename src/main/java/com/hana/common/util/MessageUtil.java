@@ -4,14 +4,22 @@ import lombok.extern.slf4j.Slf4j;
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.HashMap;
 
 @Slf4j
 public class MessageUtil {
+    @Value("${message.secret}")
+    static String secret;
+    @Value("${message.key}")
+    static String key;
+    @Value("${message.phone}")
+    static String phone;
+
     public static void Sendmsg(String randomkey, String tele){
-        String api_key = "";
-        String api_secret = "";
+        String api_key = key;
+        String api_secret = secret;
         Message coolsms = new Message(api_key, api_secret);
         HashMap<String, String> params = new HashMap<String, String>();
         String url = "링크" + "/camera?key=" + randomkey;
@@ -19,7 +27,7 @@ public class MessageUtil {
 
         params.put("to", tele);
         //유지
-        params.put("from", "01012345678");
+        params.put("from", phone);
         //유지
         params.put("type", "SMS");
         params.put("text", msg);
