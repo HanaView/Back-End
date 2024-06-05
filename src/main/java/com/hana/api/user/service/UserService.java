@@ -89,7 +89,7 @@ public class UserService {
         valueOperations.set(randomKey + "1", userResponse);
         //valueOperations.set(randomKey + "1", user, 10, TimeUnit.MINUTES);
         //4. 문자전송
-        MessageUtil.Sendmsg(randomKey, auth.getTele());
+        MessageUtil.sendMsg(randomKey, auth.getTele());
 
         return response.success(randomKey, HttpStatus.OK);
     }
