@@ -61,6 +61,10 @@ public class UserDeposit extends BaseEntity {
     @ToString.Exclude  // Lombok의 순환 참조 문제를 피하기 위해
     private List<UserDeposit> children = new ArrayList<>();
 
+    @OneToMany(mappedBy = "userDeposit", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ToString.Exclude // Lombok의 순환 참조 문제를 피하기 위해
+    private List<UserSaving> userSavings = new ArrayList<>();
+
     public void updateIsLoss(boolean status){
         this.isLoss = status;
     }

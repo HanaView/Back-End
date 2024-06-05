@@ -39,5 +39,6 @@ public class SavingCategory extends BaseEntity {
     private List<SavingCategory> children = new ArrayList<>();
 
     @OneToMany(mappedBy = "savingCategory", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ToString.Exclude
     private List<Saving> savings = new ArrayList<>();
 }
