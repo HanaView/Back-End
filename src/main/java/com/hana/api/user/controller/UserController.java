@@ -128,5 +128,4 @@ public class UserController {
         // 토큰 발급
         return userService.validate(user);
     }
-
 }
