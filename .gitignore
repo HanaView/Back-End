@@ -39,3 +39,5 @@ out/
 ### yml ###
 src/main/resources/*.yml
 
+### MESSAGE UTIL ###
+src/main/java/com/hana/common/util/MessageUtil.class

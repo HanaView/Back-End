@@ -117,8 +117,9 @@ public class UserController {
 
     @Operation(summary = "Token 발급", description = "Key를 통해 Redis 2에서 User 정보를 조회 후, Token 발급")
     @GetMapping("/validate")
-    public ResponseEntity<?> validate(@RequestParam("key") String key) {
+    public ResponseEntity<?> validate(@RequestParam("key") String key, HttpSession session) {
         System.out.println(key);
+        //session.setAttribute("key", key);
         UserResponse user = userService.getUser(key + "2");
         //User user = userRepository.getReferenceById(1L);
 

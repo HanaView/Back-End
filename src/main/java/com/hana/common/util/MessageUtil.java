@@ -5,30 +5,47 @@ import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 
 @Slf4j
+@Component
 public class MessageUtil {
-    @Value("${message.secret}")
-    static String secret;
-    @Value("${message.key}")
-    static String key;
-    @Value("${message.phone}")
-    static String phone;
 
-    public static void Sendmsg(String randomkey, String tele){
+    private static String secret;
+    private static String key;
+    private static String phone;
+
+    @Value("${message.secret}")
+    public void setSecret(String secret) {
+        MessageUtil.secret = secret;
+    }
+
+    @Value("${message.key}")
+    public void setKey(String key) {
+        MessageUtil.key = key;
+    }
+
+    @Value("${message.phone}")
+    public void setPhone(String phone) {
+        MessageUtil.phone = phone;
+    }
+
+    public static void sendMsg(String randomkey, String tele) {
         String api_key = key;
         String api_secret = secret;
+
+        log.info(secret);
+        log.info(api_secret);
+
         Message coolsms = new Message(api_key, api_secret);
         HashMap<String, String> params = new HashMap<String, String>();
-        String url = "링크" + "/camera?key=" + randomkey;
+        String url = "https://front-end-git-develop-hanaview.vercel.app/" + "/camera?key=" + randomkey;
         String msg = "해당 페이지에서 인증을 완료해주세요.\n" + url;
 
         params.put("to", tele);
-        //유지
         params.put("from", phone);
-        //유지
         params.put("type", "SMS");
         params.put("text", msg);
         params.put("app_version", "test app 1.2");
