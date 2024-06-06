@@ -41,7 +41,7 @@ public class MessageUtil {
 
         Message coolsms = new Message(api_key, api_secret);
         HashMap<String, String> params = new HashMap<String, String>();
-        String url = "https://front-end-git-develop-hanaview.vercel.app/" + "/camera?key=" + randomkey;
+        String url = "https://front-end-git-develop-hanaview.vercel.app/" + "/auth/mobile/camera?key=" + randomkey;
         String msg = "해당 페이지에서 인증을 완료해주세요.\n" + url;
 
         params.put("to", tele);
