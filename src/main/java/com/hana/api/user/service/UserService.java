@@ -12,6 +12,7 @@ import com.hana.api.user.repository.UserRepository;
 import com.hana.common.dto.Response;
 import com.hana.common.exception.ErrorCode;
 import com.hana.common.exception.user.UserNotFoundException;
+import com.hana.common.util.MessageUtil;
 import com.hana.config.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -88,7 +89,7 @@ public class UserService {
         valueOperations.set(randomKey + "1", userResponse);
         //valueOperations.set(randomKey + "1", user, 10, TimeUnit.MINUTES);
         //4. 문자전송
-        //MessageUtil.Sendmsg(randomKey, auth.getTele());
+        MessageUtil.sendMsg(randomKey, auth.getTele());
 
         return response.success(randomKey, HttpStatus.OK);
     }
