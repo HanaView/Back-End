@@ -1,6 +1,7 @@
 package com.hana.common.exception;
 
 import com.hana.common.dto.Response;
+import com.hana.common.exception.card.CardCategoryRegisterFailException;
 import com.hana.common.exception.user.UserNotAuthenticationException;
 import com.hana.common.exception.user.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -34,4 +35,13 @@ public class GlobalExceptionHandler {
 
         return response.fail(ex.getErrorCode(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(CardCategoryRegisterFailException.class)
+    public ResponseEntity<?> handleCardCategoryRegisterFailException(CardCategoryRegisterFailException ex){
+        log.error("CardCategoryRegisterFailException : ",ex);
+
+        return response.fail(ex.getErrorCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
 }

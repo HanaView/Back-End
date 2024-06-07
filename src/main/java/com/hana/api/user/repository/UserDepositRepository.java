@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface UserDepositRepository extends JpaRepository<UserDeposit, Long> {
     List<UserDeposit> findByUserId(long userId);
     List<UserDeposit> findByUserIdAndDeposit(long userId, Deposit deposit);
-
+    List<UserDeposit> findUserDepositsByDeposit_DepositCategoryIdAndUserId(long depositCategoryId, long userId);
 }

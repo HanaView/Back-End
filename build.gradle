@@ -67,3 +67,14 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+tasks.named('processResources') {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    from('src/main/resources') {
+        include '**/*.yml'
+    }
+}
+
+bootJar {
+    archiveFileName = 'hanaview.jar'
+}

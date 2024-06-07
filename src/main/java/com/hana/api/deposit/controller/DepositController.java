@@ -1,4 +1,5 @@
 package com.hana.api.deposit.controller;
+import com.hana.api.card.dto.request.CardRequestDto;
 import com.hana.api.deposit.dto.request.DepositRequestDto;
 import com.hana.api.deposit.service.DepositService;
 import com.hana.api.user.dto.request.UserRequestDto;
@@ -18,11 +19,40 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/deposit")
-@RestController@Tag(name = "deposit Open API", description = "예금 서비스 가입, 휴면, 조회 처리")
+@RestController
+@Tag(name = "Deposit API", description = "예금 서비스 가입, 휴면, 조회 처리")
 public class DepositController {
 
     private final DepositService depositService;
     private final Response response;
+
+    @Operation(summary = "예금 상품 등록", description = "예금 상품을 등록합니다.")
+    @PostMapping("/register")
+    public ResponseEntity<?> registerDeposit(@Validated @RequestBody DepositRequestDto.DepositRegisterRequest depositRegisterRequest) {
+        return depositService.registerDeposit(depositRegisterRequest);
+    }
+
+    @Operation(summary = "예금 상품 연관 이율 등록", description = "예금 상품 연관 이율 등록을 등록합니다.")
+    @PostMapping("/register/DepositRateCategory")
+    public ResponseEntity<?> registerDepositRate(@Validated @RequestBody DepositRequestDto.DepositRateRegisterRequest depositRateRegisterRequest) {
+
+        return depositService.registerDepositRate(depositRateRegisterRequest);
+    }
+
+    @Operation(summary = "예금 카테고리 등록", description = "예금 상품의 카테고리를 등록합니다.")
+    @PostMapping("/register/DepositCategory")
+    public ResponseEntity<?> registerDepositCategory(@Validated @RequestBody DepositRequestDto.DepositCategoryRegisterRequest depositCategoryRegisterRequest) {
+
+        return depositService.registerDepositCategory(depositCategoryRegisterRequest);
+    }
+
+    @Operation(summary = "예금 상품 카테고리 조회", description = "예금 상품의 카테고리들을 조회합니다.")
+    @GetMapping("/category")
+    public ResponseEntity<?> getDepositCategory() {
+        return depositService.getDepositCategory();
+    }
+
+
     //OK
     @Operation(summary = "모든 예금 상품 조회", description = "모든 예금 상품을 조회합니다.")
     @GetMapping("")
@@ -78,4 +108,25 @@ public class DepositController {
     public ResponseEntity<?> getUserDepositById(@PathVariable Long userId, @PathVariable Long depositId) {
         return depositService.getUserDepositById(userId, depositId);
     }
+
+    @Operation(summary = "사용자의 자유로운 입출금 계좌 조회", description = "특정 사용자의 특자유로운 입출금 계좌를 조회합니다.")
+    @Parameters({
+            @Parameter(name = "userId", description = "사용자 ID"),
+    })
+    @GetMapping("/{userId}/withdraws")
+    public ResponseEntity<?> getWithDrawDepositsById(@PathVariable Long userId) {
+        return depositService.getWithDrawDepositsById(userId);
+    }
+
+    @Operation(summary = "유저 입출금 계좌 비밀번호 인증", description = "출금 계좌 설정을 위해 유저의 입출금 계좌 비밀번호를 확인합니다.")
+    @Parameter(name = "userDepositId", description = "입출금 계좌 ID")
+    @PostMapping("/check/{userDepositId}")
+    public ResponseEntity<?> joinDeposit(@PathVariable Long userDepositId, @Validated @RequestBody UserRequestDto.CheckPwRequestDto checkPwRequestDto, Errors errors) {
+        if (errors.hasErrors()) {
+            return response.invalidFields(Helper.refineErrors(errors)); //CheckPwRequestDto 오류가 있는 경우
+        }
+        return depositService.checkPw(userDepositId, checkPwRequestDto);
+    }
+
+
 }

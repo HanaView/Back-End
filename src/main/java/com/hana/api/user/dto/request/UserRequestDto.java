@@ -48,6 +48,24 @@ public class UserRequestDto {
         private Long perMonth;
     }
 
+    @Getter
+    @Setter
+    public static class UserCardRequestDto {
+        @NotNull(message = "가입 유저 Id는 필수 값입니다.")
+        private Long userId;
+        @NotNull(message = "출금계좌 Id는 필수 값입니다.")
+        private Long userDepositId;
+        @NotEmpty(message = "비밀번호는 필수 값입니다.")
+        private String password;
+    }
+
+    @Getter
+    @Setter
+    public static class CheckPwRequestDto {
+        @NotEmpty(message = "비밀번호는 필수 값입니다.")
+        private String password;
+    }
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
