@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/deposit")
-@RestController@Tag(name = "deposit Open API", description = "예금 서비스 가입, 휴면, 조회 처리")
+@RestController
+@Tag(name = "Deposit API", description = "예금 서비스 가입, 휴면, 조회 처리")
 public class DepositController {
 
     private final DepositService depositService;
@@ -78,4 +79,25 @@ public class DepositController {
     public ResponseEntity<?> getUserDepositById(@PathVariable Long userId, @PathVariable Long depositId) {
         return depositService.getUserDepositById(userId, depositId);
     }
+
+    @Operation(summary = "사용자의 자유로운 입출금 계좌 조회", description = "특정 사용자의 특자유로운 입출금 계좌를 조회합니다.")
+    @Parameters({
+            @Parameter(name = "userId", description = "사용자 ID"),
+    })
+    @GetMapping("/{userId}/withdraws")
+    public ResponseEntity<?> getWithDrawDepositsById(@PathVariable Long userId) {
+        return depositService.getWithDrawDepositsById(userId);
+    }
+
+    @Operation(summary = "유저 입출금 계좌 비밀번호 인증", description = "출금 계좌 설정을 위해 유저의 입출금 계좌 비밀번호를 확인합니다.")
+    @Parameter(name = "userDepositId", description = "입출금 계좌 ID")
+    @PostMapping("/check/{userDepositId}")
+    public ResponseEntity<?> joinDeposit(@PathVariable Long userDepositId, @Validated @RequestBody UserRequestDto.CheckPwRequestDto checkPwRequestDto, Errors errors) {
+        if (errors.hasErrors()) {
+            return response.invalidFields(Helper.refineErrors(errors)); //CheckPwRequestDto 오류가 있는 경우
+        }
+        return depositService.checkPw(userDepositId, checkPwRequestDto);
+    }
+
+
 }

@@ -55,7 +55,8 @@ public class UserSaving {
     @JoinColumn(name = "saving_id", referencedColumnName = "saving_id")
     private Saving saving;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    //@OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_deposit_id", referencedColumnName = "user_deposit_id")
     private UserDeposit userDeposit;
 }

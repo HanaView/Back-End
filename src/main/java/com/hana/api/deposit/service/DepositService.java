@@ -12,8 +12,10 @@ import com.hana.api.user.repository.UserRepository;
 import com.hana.common.dto.Response;
 
 import com.hana.api.user.entity.User;
+import com.hana.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -143,5 +145,19 @@ public class DepositService {
         // Fetch user-specific deposit by id logic here
         // This is a placeholder implementation
         return response.success(responseDtos);
+    }
+
+    public ResponseEntity<?> checkPw(Long userDepositId, UserRequestDto.CheckPwRequestDto checkPwRequestDto){
+        UserDeposit userDeposit = userDepositRepository.findById(userDepositId).get();
+
+        if(userDeposit.getPassword().equals(checkPwRequestDto.getPassword())){
+            return response.success();
+        }
+        return response.fail(ErrorCode.INVALID_DEPOSIT_PASSWORD, HttpStatus.BAD_REQUEST);
+    }
+
+    public ResponseEntity<?> getWithDrawDepositsById(Long userId){
+        List<UserDeposit> deposits = userDepositRepository.findUserDepositsByDeposit_DepositCategoryIdAndUserId(1, userId);
+        return response.success(deposits, HttpStatus.OK);
     }
 }

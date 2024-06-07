@@ -34,9 +34,18 @@ public enum ErrorCode {
 
     // Deposit
     DEPOSIT_NOT_FOUND("U099", "예금이 존재하지 않습니다."),
+    INVALID_DEPOSIT_PASSWORD("D002", "입출금 계좌의 비밀번호가 일치하지 않습니다."),
+
     // Saving
 
     // Card
+    CARD_JOIN_FAILED("C001", "카드 가입에 실패했습니다. 연관 데이터들의 존재 유무를 확인해주세요."),
+    CARD_REGISTER_FAILED("C002", "카드 상품 등록이 실패했습니다. 연관 데이터들의 존재 유무를 확인해주세요."),
+    CARD_BENEFIT_REGISTER_FAILED("C003", "카드 혜택 등록에 실패했습니다. 존재하는 카드인지 확인해주세요."),
+    CARD_CATEGORY_REGISTER_FAILED("C004", "카드 카테고리 등록에 실패했습니다. 정보를 다시 확인해주세요."),
+
+    // UserCard
+    USERCARD_NOT_FOUND("UC001", "가입한 카드 정보가 존재하지 않습니다.")
     ;
 
     private final String errorCode;
