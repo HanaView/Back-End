@@ -26,7 +26,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/auth")
-@Tag(name = "AUTH API", description = "유저(텔러, 사용자)에 대한 인증, 인가를 위한 API")
+@Tag(name = "Auth API", description = "유저(텔러, 사용자)에 대한 인증, 인가를 위한 API")
 public class AuthController {
 
     private final RedisAuthService redisAuthService;

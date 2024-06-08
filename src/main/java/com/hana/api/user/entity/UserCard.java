@@ -31,4 +31,7 @@ public class UserCard extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_deposit_id", referencedColumnName = "user_deposit_id")
     private UserDeposit userDeposit;
+
+    @Column(nullable = false, length = 127)
+    private String password;
 }

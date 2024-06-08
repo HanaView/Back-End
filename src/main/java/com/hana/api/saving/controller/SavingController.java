@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/saving")
-@RestController@Tag(name = "saving Open API", description = "적금 서비스 가입, 휴면, 조회 처리")
+@RestController
+@Tag(name = "saving Open API", description = "적금 서비스 가입, 휴면, 조회 처리")
 public class SavingController {
 
     private final SavingService savingService;

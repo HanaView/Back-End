@@ -36,10 +36,6 @@ public class Card extends BaseEntity {
     private String brand;
 
     @Column(nullable = false, length = 255)
-    @NotBlank(message = "는 필수 값입니다.")
-    private String spending;
-
-    @Column(nullable = false, length = 255)
     @NotBlank(message = "카드 정보 pdf는 필수 값입니다.")
     private String link;
 
