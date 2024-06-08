@@ -1,4 +1,6 @@
 package com.hana.api.saving.controller;
+import com.hana.api.deposit.dto.request.DepositRequestDto;
+import com.hana.api.saving.dto.request.SavingRequestDto;
 import com.hana.api.saving.service.SavingService;
 import com.hana.api.user.dto.request.UserRequestDto;
 import com.hana.common.dto.Response;
@@ -47,19 +49,25 @@ public class SavingController {
         return savingService.joinSaving(savingId, dto);
     }
 
-//    @Operation(summary = "적금 해지", description = "특정 사용자의 적금을 해지합니다.")
-//    @Parameter(name = "userSavingId", description = "사용자 적금 ID")
-//    @PutMapping("/{userSavingId}/cancellation")
-//    public ResponseEntity<?> cancelUserSaving(@PathVariable Long userSavingId) {
-//        return savingService.cancelUserSaving(userSavingId);
-//    }
-//
-//    @Operation(summary = "적금 휴면", description = "특정 사용자의 적금을 휴면 상태로 만듭니다.")
-//    @Parameter(name = "userSavingId", description = "사용자 적금 ID")
-//    @PutMapping("/{userSavingId}/dormancy")
-//    public ResponseEntity<?> dormancyUserSaving(@PathVariable Long userSavingId) {
-//        return savingService.dormancyUserSaving(userSavingId);
-//    }
+    @Operation(summary = "적금 해지", description = "특정 사용자의 적금을 해지합니다.")
+    @Parameter(name = "userSavingId", description = "사용자 적금 ID")
+    @PutMapping("/{userSavingId}/cancellation")
+    public ResponseEntity<?> cancelUserSaving(@PathVariable Long userSavingId) {
+        return savingService.cancelSaving(userSavingId);
+    }
+
+    @Operation(summary = "적금 휴면", description = "특정 사용자의 적금을 휴면 상태로 만듭니다.")
+    @Parameter(name = "userSavingId", description = "사용자 적금 ID")
+    @PutMapping("/{userSavingId}/dormancy")
+    public ResponseEntity<?> dormancyUserSaving(@PathVariable Long userSavingId) {
+        return savingService.setDormancy(userSavingId);
+    }
+
+    @Operation(summary = "적금 상품 등록", description = "예금 상품을 등록합니다.")
+    @PostMapping("/register")
+    public ResponseEntity<?> registerDeposit(@Validated @RequestBody SavingRequestDto.SavingRegisterRequest savingRequestDto) {
+        return savingService.registerSaving(savingRequestDto);
+    }
 
     @Operation(summary = "사용자 적금 상품 조회", description = "특정 사용자의 모든 적금 상품을 조회합니다.")
     @Parameter(name = "userId", description = "사용자 ID")
@@ -76,5 +84,17 @@ public class SavingController {
     @GetMapping("/{userId}/{savingId}")
     public ResponseEntity<?> getUserSavingById(@PathVariable Long userId, @PathVariable Long savingId) {
         return savingService.getUserSavingById(userId, savingId);
+    }
+    @Operation(summary = "적금 카테고리 등록", description = "예금 상품의 카테고리를 등록합니다.")
+    @PostMapping("/register/SavingCategory")
+    public ResponseEntity<?> registerDepositCategory(@Validated @RequestBody SavingRequestDto.SavingCategoryRegisterRequest savingCategoryRegisterRequest) {
+        return savingService.registerSavingCategory(savingCategoryRegisterRequest);
+    }
+
+    @Operation(summary = "적금 상품 연관 이율 등록", description = "적금 상품 연관 이율 등록을 등록합니다.")
+    @PostMapping("/register/SavingRateCategory")
+    public ResponseEntity<?> registerDepositRate(@Validated @RequestBody SavingRequestDto.SavingRateRegisterRequest savingRateRegisterRequest) {
+
+        return savingService.registerSavingRate(savingRateRegisterRequest);
     }
 }

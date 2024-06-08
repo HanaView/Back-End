@@ -1,8 +1,18 @@
 package com.hana.api.saving.service;
 
+import com.hana.api.card.dto.request.CardRequestDto;
+import com.hana.api.card.entity.Card;
+import com.hana.api.deposit.dto.request.DepositRequestDto;
 import com.hana.api.deposit.entity.Deposit;
+import com.hana.api.deposit.entity.DepositCategory;
+import com.hana.api.deposit.entity.DepositRate;
+import com.hana.api.saving.dto.request.SavingRequestDto;
 import com.hana.api.saving.dto.response.SavingResponseDto;
 import com.hana.api.saving.entity.Saving;
+import com.hana.api.saving.entity.SavingCategory;
+import com.hana.api.saving.entity.SavingRate;
+import com.hana.api.saving.repository.SavingCategoryRepository;
+import com.hana.api.saving.repository.SavingRateRepository;
 import com.hana.api.saving.repository.SavingRepository;
 import com.hana.api.user.dto.request.UserRequestDto;
 import com.hana.api.user.dto.response.UserDepositResponseDto;
@@ -14,7 +24,10 @@ import com.hana.api.user.repository.UserDepositRepository;
 import com.hana.api.user.repository.UserSavingRepository;
 import com.hana.api.user.repository.UserRepository;
 import com.hana.common.dto.Response;
+import com.hana.common.exception.ErrorCode;
+import com.hana.common.exception.card.CardRegisterFailException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,10 +38,15 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SavingService {
 
     //saving 관련 정보 가져오기
     private final SavingRepository savingRepository;
+    //saving 관련 정보 가져오기
+    private final SavingRateRepository savingRateRepository;
+    //savingCategory 관련 정보 가져오기
+    private final SavingCategoryRepository savingCategoryRepository;
     //saving 관련 정보 가져오기
     private final UserRepository userRepository;
     //사용자의 saving 정보 가져오기 위해서
@@ -90,6 +108,33 @@ public class SavingService {
         return response.success(new UserSavingResponseDto(userSaving));
     }
 
+    public ResponseEntity<?> registerSavingCategory(SavingRequestDto.SavingCategoryRegisterRequest savingCategoryRegisterRequest){
+
+        Long parentId = savingCategoryRegisterRequest.getParentId();
+
+        SavingCategory savingCategory = SavingCategory.builder()
+                .name(savingCategoryRegisterRequest.getName())
+                .parent(parentId == null ? null : savingCategoryRepository.findById(parentId).get())
+                .build();
+
+        savingCategoryRepository.save(savingCategory);
+        return response.success();
+    }
+
+    public ResponseEntity<?> registerSavingRate(SavingRequestDto.SavingRateRegisterRequest savingRateRegisterRequest){
+
+        SavingRate savingRate = SavingRate.builder()
+                .period(savingRateRegisterRequest.getPeriod())
+                .rate(savingRateRegisterRequest.getRate())
+                .saving(savingRepository.findById(savingRateRegisterRequest.getSavingId()).get())
+                .build();
+
+        savingRateRepository.save(savingRate);
+
+        return response.success();
+    }
+
+
     public ResponseEntity<?> cancelSaving(Long userSavingId) {
         // Saving cancellation logic here
         // This is a placeholder implementation
@@ -117,5 +162,27 @@ public class SavingService {
                 .map(UserSavingResponseDto::new)
                 .collect(Collectors.toList());
         return  response.success(responseDtos);
+    }
+
+    public ResponseEntity<?> registerSaving(SavingRequestDto.SavingRegisterRequest savingRequestDto){
+
+        log.info("[registerSaving]");
+
+        Saving saving;
+        try{
+            saving = Saving.builder()
+                    .name(savingRequestDto.getName())
+                    .minJoinAmount(savingRequestDto.getMinJoinAmount())
+                    .maxJoinAmount(savingRequestDto.getMaxJoinAmount())
+                    .target(savingRequestDto.getTarget())
+                    .infoImg(savingRequestDto.getInfoImg())
+                    .savingCategory(savingCategoryRepository.findById(savingRequestDto.getSavingCategoryId()).get())
+                    .build();
+        } catch(Exception e){
+            throw new CardRegisterFailException(ErrorCode.CARD_REGISTER_FAILED);
+        }
+
+        savingRepository.save(saving);
+        return response.success();
     }
 }

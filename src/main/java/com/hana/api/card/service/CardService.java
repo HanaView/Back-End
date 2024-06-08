@@ -61,6 +61,7 @@ public class CardService {
                     .annualFee(cardRegisterRequest.getAnnualFee())
                     .brand(cardRegisterRequest.getBrand())
                     .link(cardRegisterRequest.getLink())
+                    .spending(cardRegisterRequest.getSpending())
                     .category(cardCategoryRepository.findById(cardRegisterRequest.getCardCategoryId()).get())
                     .build();
         } catch(Exception e){
