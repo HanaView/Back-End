@@ -42,7 +42,6 @@ public class DepositController {
     @Operation(summary = "예금 카테고리 등록", description = "예금 상품의 카테고리를 등록합니다.")
     @PostMapping("/register/DepositCategory")
     public ResponseEntity<?> registerDepositCategory(@Validated @RequestBody DepositRequestDto.DepositCategoryRegisterRequest depositCategoryRegisterRequest) {
-
         return depositService.registerDepositCategory(depositCategoryRegisterRequest);
     }
 

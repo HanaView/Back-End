@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 
 import static com.hana.common.exception.ErrorCode.USER_NOT_AUTHENTICATION;
@@ -113,6 +114,13 @@ public class UserController {
         UserResponse user = userService.getUser(key + "1");
         userService.authComplete(user, key);
         return response.success(key);
+    }
+
+    @Operation(summary = "user 가져오기", description = "인증 완료 후 User 정보 Redis 2에 저장")
+    @GetMapping("/getAllUsers")
+    public ResponseEntity<?> getAllUser() {
+        List<User> users = (List<User>) userService.getAllUser();
+        return response.success(users);
     }
 
     @Operation(summary = "Token 발급", description = "Key를 통해 Redis 2에서 User 정보를 조회 후, Token 발급")

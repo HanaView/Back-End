@@ -8,24 +8,34 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class SavingRequestDto {
-    @NotBlank(message = "예금 상품명은 필수 값입니다.")
-    private String name;
 
-    private Long minJoinAmount;
+    @Data
+    public static class SavingRegisterRequest {
+        @NotBlank(message = "예금 상품명은 필수 값입니다.")
+        private String name;
 
-    private Long maxJoinAmount;
+        private Long minJoinAmount;
 
-    private String target; //어떤
+        private Long maxJoinAmount;
 
-    private String adImg;
+        private String target; //어떤
 
-    private String infoImg;
+        private String infoImg;
 
-    @NotNull(message = "예금 카테고리 ID는 필수 값입니다.")
-    private Long depositCategoryId;
+        @NotNull(message = "예금 카테고리 ID는 필수 값입니다.")
+        private Long savingCategoryId;
+    }
+    @Data
+    public static class SavingCategoryRegisterRequest {
+        private String name;
+        private Long parentId;
+    }
+
+    @Data
+    public static class SavingRateRegisterRequest {
+        private Long period;
+        private Double rate;
+        private Long savingId;
+    }
 }
