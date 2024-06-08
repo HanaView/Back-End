@@ -78,3 +78,17 @@ tasks.named('processResources') {
 bootJar {
     archiveFileName = 'hanaview.jar'
 }
+
+sourceSets {
+    main {
+        resources {
+            srcDir 'src/main/resources'
+            include '**/*.yml'
+            include '**/*.properties'
+        }
+    }
+}
+
+jar {
+    from sourceSets.main.resources
+}
