@@ -97,4 +97,10 @@ public class SavingController {
 
         return savingService.registerSavingRate(savingRateRegisterRequest);
     }
+    @Operation(summary = "적금 상품 카테고리 조회", description = "적금 상품의 카테고리들을 조회합니다.")
+    @GetMapping("/category")
+    public ResponseEntity<?> getSavingCategory() {
+        return savingService.getSavingCategory();
+    }
+
 }

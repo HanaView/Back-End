@@ -3,10 +3,12 @@ package com.hana.api.saving.service;
 import com.hana.api.card.dto.request.CardRequestDto;
 import com.hana.api.card.entity.Card;
 import com.hana.api.deposit.dto.request.DepositRequestDto;
+import com.hana.api.deposit.dto.response.DepositCategoryResponseDto;
 import com.hana.api.deposit.entity.Deposit;
 import com.hana.api.deposit.entity.DepositCategory;
 import com.hana.api.deposit.entity.DepositRate;
 import com.hana.api.saving.dto.request.SavingRequestDto;
+import com.hana.api.saving.dto.response.SavingCategoryResponseDto;
 import com.hana.api.saving.dto.response.SavingResponseDto;
 import com.hana.api.saving.entity.Saving;
 import com.hana.api.saving.entity.SavingCategory;
@@ -69,6 +71,14 @@ public class SavingService {
                 .orElseThrow();
 //                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.DEPOSIT_NOT_FOUND));
         return response.success(new SavingResponseDto(saving));
+    }
+
+    public ResponseEntity<?> getSavingCategory() {
+        List<SavingCategoryResponseDto> depositCategoryList = savingCategoryRepository.findAllByParentIdIsNull().stream()
+                .map(SavingCategoryResponseDto::new)
+                .toList();
+
+        return response.success(depositCategoryList);
     }
 
     @Transactional
