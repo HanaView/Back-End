@@ -16,6 +16,7 @@ public class CardRequestDto {
         private String annualFee;
         private String brand;
         private String link;
+        private String spending;
         private Long cardCategoryId;
     }
 

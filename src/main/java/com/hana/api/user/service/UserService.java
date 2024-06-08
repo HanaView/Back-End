@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -69,6 +70,10 @@ public class UserService {
         return response.success("회원가입 완료");
     }
 
+    public ResponseEntity<?> getAllUser(){
+        List<User> users = userRepository.findAll();
+        return (ResponseEntity<?>) users;
+    }
     public ResponseEntity<?> auth(UserRequestDto.Auth auth) {
         User user = userRepository.findByNameAndTele(auth.getName(), auth.getTele()).orElse(null);
 
