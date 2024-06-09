@@ -4,6 +4,7 @@ import com.hana.api.deposit.entity.Deposit;
 import com.hana.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Builder
@@ -22,11 +23,11 @@ public class SavingRate extends BaseEntity {
     private Long id;
 
     @Column(nullable = false, length = 31)
-    @NotBlank(message = "적금 기간은 필수 값입니다.")
+    @NotNull(message = "적금 기간은 필수 값입니다.")
     private Long period;
 
     @Column(nullable = false, length = 31)
-    @NotBlank(message = "기간별 이자율은 필수 값입니다.")
+    @NotNull(message = "기간별 이자율은 필수 값입니다.")
     private Double rate;
 
     @ManyToOne(fetch = FetchType.LAZY)
