@@ -1,6 +1,7 @@
 package com.hana.api.user.dto.response;
 
 import com.hana.api.deposit.dto.response.DepositRateResponseDto;
+import com.hana.api.deposit.dto.response.DepositResponseDto;
 import com.hana.api.deposit.entity.Deposit;
 import com.hana.api.user.entity.User;
 import com.hana.api.user.entity.UserDeposit;
@@ -25,6 +26,8 @@ public class UserDepositResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private UserDepositResponseDto parent;
+    private DepositResponseDto depositInfo;
+    private UserResponse userInfo;
 
     public UserDepositResponseDto(UserDeposit entity) {
         this.id = entity.getId();
@@ -37,6 +40,8 @@ public class UserDepositResponseDto {
         this.isLoss = entity.getIsLoss();
         this.createdAt = entity.getCreatedDate();
         this.updatedAt = entity.getModifiedDate();
+        this.userInfo = new UserResponse(entity.getUser());
+        this.depositInfo = new DepositResponseDto(entity.getDeposit());
         if(entity.getParent() != null) {
             this.parent = new UserDepositResponseDto(entity.getParent());
         }
