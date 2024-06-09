@@ -42,12 +42,11 @@ public class MessageUtil {
         Message coolsms = new Message(api_key, api_secret);
         HashMap<String, String> params = new HashMap<String, String>();
         String url = "https://front-end-liart-five.vercel.app/" + "auth/mobile/camera?key=" + randomkey;
-//        String msg = "해당 페이지에서 인증을 완료해주세요.\n" + url;
-        String msg = url;
+        String msg = "해당 페이지에서 인증을 완료해주세요.\n" + url;
 
         params.put("to", tele);
         params.put("from", phone);
-        params.put("type", "SMS");
+        params.put("type", "LMS");
         params.put("text", msg);
         params.put("app_version", "test app 1.2");
 
