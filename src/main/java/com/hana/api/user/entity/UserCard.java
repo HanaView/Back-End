@@ -28,7 +28,7 @@ public class UserCard extends BaseEntity {
     @JoinColumn(name = "card_id", referencedColumnName = "card_id")
     private Card card;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_deposit_id", referencedColumnName = "user_deposit_id")
     private UserDeposit userDeposit;
 

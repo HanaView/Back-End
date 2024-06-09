@@ -21,7 +21,7 @@ public class SwaggerConfig {
 
     // 로컬 및 프로덕션 서버 URL
     private static final String LOCAL_SERVER_URL = "http://localhost:80";
-    private static final String PROD_SERVER_URL = "https://www.hanaview.com";
+    private static final String PROD_SERVER_URL = "https://hanaview.shop";
 
     // 보안 스키마 이름
     private static final String ACCESS_TOKEN = "AccessToken";
@@ -64,17 +64,18 @@ public class SwaggerConfig {
                 .info(new Info().title("HanaView API").description("화상 창구 서비스 HanaView API 명세서 입니다.").version("1.0.0"));
     }
 
+    // 관리자 API 그룹 생성
+    @Bean
+    public GroupedOpenApi adminOpenApi() {
+        return createGroupedOpenApi("ADMIN API", "/api/admins/**", null, "Admin", "화상 창구 서비스 HanaView Admin API 명세서 입니다.", "1.0.0");
+    }
+
     // 사용자 API 그룹 생성
     @Bean
     public GroupedOpenApi userOpenApi() {
         return createGroupedOpenApi("USER API", "/api/**", new String[]{"/api/admins/**"}, "HanaView API", "화상 창구 서비스 HanaView API 명세서 입니다.", "1.0.0");
     }
 
-    // 관리자 API 그룹 생성
-    @Bean
-    public GroupedOpenApi adminOpenApi() {
-        return createGroupedOpenApi("ADMIN API", "/api/admins/**", null, "Admin", "화상 창구 서비스 HanaView Admin API 명세서 입니다.", "1.0.0");
-    }
 
     // GroupedOpenApi 객체를 생성하는 메서드
     private GroupedOpenApi createGroupedOpenApi(String group, String path, String[] excludePaths, String title, String description, String version) {
