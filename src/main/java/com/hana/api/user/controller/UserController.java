@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -136,5 +138,25 @@ public class UserController {
 
         // 토큰 발급
         return userService.validate(user);
+    }
+
+    @Operation(summary = "Teller화면에서 user정보 조회", description = "Key를 통해 Redis 2에서 User 정보 조회")
+    @GetMapping("/getUserInfo")
+    public  ResponseEntity<?> getUserInfo(@RequestParam("key") String key) {
+        System.out.println(key);
+        String redisKey = key + "2";
+        UserResponse user = userService.getUser(redisKey);
+        log.info("------------user"+user.toString());
+
+        String imageBytes = userService.getImage(key + "3");
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpHeaders.CONTENT_TYPE, "image/jpeg");
+        if(user == null)
+            return response.fail(USER_NOT_AUTHENTICATION, HttpStatus.BAD_REQUEST);
+        Map<String, Object> map = new HashMap<>();
+        map.put("user", user);
+        map.put("key", key);
+        map.put("image", imageBytes);
+        return response.success(map);
     }
 }

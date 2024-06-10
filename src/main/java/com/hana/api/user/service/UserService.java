@@ -32,6 +32,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import java.awt.*;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -110,6 +112,12 @@ public class UserService {
     public UserResponse getUser(String key) {
         ValueOperations<String, Object> valueOperations = createRedisTemplate.opsForValue();
         return (UserResponse) valueOperations.get(key);
+    }
+
+    public String getImage(String key) {
+        ValueOperations<String, Object> valueOperations = createRedisTemplate.opsForValue();
+        String imageBytes = (String) valueOperations.get(key);
+        return imageBytes;
     }
 
     public ResponseEntity<?> validate(UserResponse user) {
