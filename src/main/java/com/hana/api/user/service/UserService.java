@@ -93,8 +93,8 @@ public class UserService {
         log.info("key" + randomKey);
         // 3. redis random key and dto
         ValueOperations<String, Object> valueOperations = createRedisTemplate.opsForValue();
-        valueOperations.set(randomKey + "1", userResponse);
-        //valueOperations.set(randomKey + "1", user, 10, TimeUnit.MINUTES);
+//        valueOperations.set(randomKey + "1", userResponse);
+        valueOperations.set(randomKey + "1", user, 10, TimeUnit.MINUTES);
         //4. 문자전송
         MessageUtil.sendMsg(randomKey, auth.getTele());
 
