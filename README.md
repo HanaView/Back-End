@@ -12,14 +12,32 @@ Hanaview는 비대면 화상 창구 서비스를 통해 대면 업무에서의 �
 ## 🎬 시연 영상
 https://youtu.be/tNko3bdyv00?si=3jry193DLumVXeOw
 
+## 🔥 작업 기간
+
+- 2024.05.14 - 2024.06.12
+
 ## 💻 Tech Stack
-- IDE : IntelliJ, Visual Studio Code
-- Front-End: Vite, React, React-Query, JavaScript, SASS
-- Backend : SpringBoot, JAVA, Spring-Security, JPA, Gradle
-- Database: AWS RDS, MySQL, Redis
-- Devops: AWS, Docker, GitHub Actions, Nginx
-- API Documentation: Swagger
-- VCS: GitHub, Notion, Figma, Swagger 3.0
+
+#### Environment
+
+<img src="https://img.shields.io/badge/intellijidea-000000?style=flat&logo=intellijidea&logoColor=white">
+
+#### Development
+
+<img src="https://img.shields.io/badge/Java-007396?style=flat&logo=Java&logoColor=white"> <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat&logo=Spring Boot&logoColor=white">
+![image](https://img.shields.io/badge/JWT-000000?style=flat-square&logo=JSON%20web%20tokens&logoColor=white)
+
+#### DataBase
+
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=MySQL&logoColor=white"> <img src="https://img.shields.io/badge/Redis-DC382D?style=flat&logo=Redis&logoColor=white">
+
+#### Deployment
+![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=flat-square&logo=amazon-aws&logoColor=white)
+
+#### Communication
+
+<img src="https://img.shields.io/badge/Slack-4A154B?style=flat&logo=Slack&logoColor=white"> <img src="https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white">
+
 
 ## 📀 ERD
 ![image](https://github.com/HanaView/.github/assets/71822139/bdde02af-8def-4616-b8f6-eb63a522a0a6)
@@ -36,6 +54,6 @@ https://youtu.be/tNko3bdyv00?si=3jry193DLumVXeOw
 
 
 ## 📃 API
-![Uploading localhost_swagger-ui_index.html_urls.primaryName=USER%20API.png…]()
+![localhost_swagger-ui_index html_urls primaryName=USER%20API](https://github.com/HanaView/Back-End/assets/98458302/29369a7d-8ccb-41b8-a7f4-565b1e4de0ab)
 
 
