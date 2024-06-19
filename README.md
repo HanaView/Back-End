@@ -25,7 +25,7 @@ https://youtu.be/tNko3bdyv00?si=3jry193DLumVXeOw
 #### Development
 
 <img src="https://img.shields.io/badge/Java-007396?style=flat&logo=Java&logoColor=white"> <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat&logo=Spring Boot&logoColor=white">
-![image](https://img.shields.io/badge/JWT-000000?style=flat-square&logo=JSON%20web%20tokens&logoColor=white)
+![image](https://img.shields.io/badge/JWT-000000?style=flat-square&logo=JSON%20web%20tokens&logoColor=white) <img src="https://img.shields.io/badge/JPA-007396?style=flat-square&logo=Java&logoColor=green"> 
 
 #### DataBase
 
@@ -36,7 +36,7 @@ https://youtu.be/tNko3bdyv00?si=3jry193DLumVXeOw
 
 #### Communication
 
-<img src="https://img.shields.io/badge/Slack-4A154B?style=flat&logo=Slack&logoColor=white"> <img src="https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white">
+<img src="https://img.shields.io/badge/Slack-4A154B?style=flat&logo=Slack&logoColor=white"> <img src="https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white"> <img src = "https://img.shields.io/badge/Swagger-6DB33F?style=flat-square&logo=Swagger&logoColor=white">
 
 
 ## 📀 ERD
